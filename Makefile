@@ -1,6 +1,7 @@
-try: aaa.o lista.o
-	cc aaa.o lista.o -o try
-aaa.o: lista.h aaa.c
-	cc -Wall -c aaa.c 
-lista.o: lista.c lista.h
-	cc -Wall -c lista.c
+project: main.o list.o
+	cc main.o list.o -o project
+main.o: list.h main.c
+	cc -Wall -c main.c
+list.o: list.c list.h
+	cc -Wall -c list.c
+	
