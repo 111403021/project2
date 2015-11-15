@@ -48,7 +48,6 @@ void insert(list *l, Bus *str, int pos);
 char *remov(list *l, int pos);
 void newbus(list *l, Bus *str);
 int length(list *l);
-void reverse(list *l);
 void SeatReservation(list *l, int BusNum);
 void fnShowStatus(list *l, int BusNum);
 void fnDailyReport(list *l);
