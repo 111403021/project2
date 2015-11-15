@@ -1,231 +1,286 @@
+/*****************************************************************************
+ * Copyright (C) Aishwarya Ramesh Latane   latanear14.comp@coep.ac.in
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+ *****************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lista.h"
-void init(list *l) {
-	l->head = l->tail = NULL;
+#include "list.h"
+FILE *fd;  /*file pointr*/
+
+void init(list *l) {   /*initionlising linklist */
+
+	l->head = NULL;
+	l->tail = NULL;
 	l->length = 0;
 }
-void showbus(list *l) {
-	
+
+void showbus(list *l) { /*shows buses available*/
+
 	printf("\n\n\t\t\t______________________");
 	printf("\n\n\t\t\t BUSES AVALAIBLE");
 	printf("\n\n\t\t\t______________________\n");
 	printf("\n");
-	fnPrintLine();
-	printf("Forwards: [ ");
-	node *p;
-	p = l->head;
 	
+	node *p = l->head;
 	while(p != l->tail) {
-		printf ("hjgjh");
-		printf("\n\t\tbus no-\t\t%d",p->str->BusNum);
-		printf("\n\t\tbus code-\t%d",p->str->BusCode);
-		printf("\n\t\tDrivers Name-\t%s",p->str->chDrivers_Name);
-		printf("\n\t\tFrom-\t\t%s",p->str->chGoesFrom);
-		printf("\n\t\tTo-\t\t%s",p->str->GoesTo);
-		printf("\n\t\tArrival time-\t%d:%d",p->str->Arrival_Time.Hrs,p->str->Arrival_Time.Mins);
-		printf("\n\t\tDeparture time-\t%d:%d",p->str->stDeparture_Time.Hrs,p->str->stDeparture_Time.Mins);
-		printf("\n\t\tFare-\t\t%.4f",p->str->fFare);
-		printf("\n\t\tTickets Sold-\t%d",p->str->Ticketsold);
+		printf("\n\t\tbus no-\t\t%d", p->str->BusNum);
+		printf("\n\t\tbus code-\t%d", p->str->BusCode);
+		printf("\n\t\tDrivers Name-\t%s", p->str->chDrivers_Name);
+		printf("\n\t\tFrom-\t\t%s", p->str->chGoesFrom);
+		printf("\n\t\tTo-\t\t%s", p->str->GoesTo);
+		printf("\n\t\tArrival time-\t%d:%d", p->str->Arrival_Time.Hrs, p->str->Arrival_Time.Mins);
+		printf("\n\t\tDeparture time-\t%d:%d", p->str->stDeparture_Time.Hrs, p->str->stDeparture_Time.Mins);
+		printf("\n\t\tFare-\t\t%.4f", p->str->fFare);
+		printf("\n\t\tTickets Sold-\t%d", p->str->Ticketsold);
 		p = p->next;
 	}
+	
 	if(p) {
-		printf("\n\t\tbus no-\t\t%d",p->str->BusNum);
-		printf("\n\t\tbus code-\t%d",p->str->BusCode);
-		printf("\n\t\tDrivers Name-\t%s",p->str->chDrivers_Name);
-		printf("\n\t\tFrom-\t\t%s",p->str->chGoesFrom);
-		printf("\n\t\tTo-\t\t%s",p->str->GoesTo);
-		printf("\n\t\tArrival time-\t%d%d",p->str->Arrival_Time.Hrs,p->str->Arrival_Time.Mins);
-		printf("\n\t\tDeparture time-\t%d%d",p->str->stDeparture_Time.Hrs,p->str->stDeparture_Time.Mins);
-		printf("\n\t\tFare-\t\t%.4f",p->str->fFare);
-		printf("\n\t\tTickets Sold-\t%d",p->str->Ticketsold);
-	printf(" ]\n");
+		printf("\n\t\tbus no-\t\t%d", p->str->BusNum);
+		printf("\n\t\tbus code-\t%d", p->str->BusCode);
+		printf("\n\t\tDrivers Name-\t%s", p->str->chDrivers_Name);
+		printf("\n\t\tFrom-\t\t%s", p->str->chGoesFrom);
+		printf("\n\t\tTo-\t\t%s", p->str->GoesTo);
+		printf("\n\t\tArrival time-\t%d:%d", p->str->Arrival_Time.Hrs, p->str->Arrival_Time.Mins);
+		printf("\n\t\tDeparture time-\t%d:%d", p->str->stDeparture_Time.Hrs, p->str->stDeparture_Time.Mins);
+		printf("\n\t\tFare-\t\t%.4f", p->str->fFare);
+		printf("\n\t\tTickets Sold-\t%d", p->str->Ticketsold);
+	
 	}
 	printf("\n");
-		fnPrintLine();
-	
-	fnMainMenu();
 }
-/* can insert at positions [0..length] */
-/*void insert(list *l, char *str, int pos) {
-	node *p, *tmp;
-	int i;
-	if(pos < 0 || pos > l->length)		
-		return;
 
-	tmp = (node *)malloc(sizeof(node));
-	tmp->str = (char *)malloc(strlen(str) + 1);
-	strcpy(tmp->str, str);
-	if(l->head == NULL) {
-		tmp->next = tmp->prev = 
-		l->head = l->tail = tmp;
-		l->length = 1;
-		return;
-	}
-	/* assert: posoitin is =>0 && <= length 
-	p = l->head;
-	for(i = 0; i < pos - 1; i++)
-		p = p->next;
-	if(pos == 0)
-		p = p->prev;
-	/* assert: p points to the node after which we link tmp
-
-	tmp->prev = p;	
-	tmp->next = p->next;
-	p->next->prev = tmp;
-	p->next = tmp;
-	if(pos == l->length)
-		l->tail = tmp;
-	if(pos == 0)
-		l->head = tmp;
-	(l->length)++;
-}*/
-char *remov(list *l, int pos) {
-	return NULL;
-}
-void newbus(list *l, Bus *str){
+void newbus(list *l, Bus *str){ /*adds bus to linklist*/
 		
 	node *tmp;
 	tmp = (node *)malloc(sizeof(node));
-	tmp-> str = str;
-	if(l->head == NULL) {
-		tmp->next = NULL;
+	tmp->str = str;
+	if(l->head == NULL && l->tail == NULL && l->length == 0) {
+		tmp->next = tmp;
 		l->head = tmp;
 		l->tail = tmp;
 		l->length = 1;
 		return;
 	}
+	
 	else{
 		l->tail->next = tmp;
 		l->tail = tmp;
 		(l->length)++;	
+		return;
+	}
+}
 
-}
-}
 int length(list *l) {
 	return l->length;	
 }
-void reverse(list *l) {
-	node *p, *q, *r;
-	if(l->head == l->tail)
-		return;
-	if(l->length == 2) {
-		p = l->tail;
-		l->tail = l->head;
-		l->head = p;
-		return;
-	}		
-	q = l->head;
-	p = q->next;
-	r = p->next;
-	while(q != r) {
-		p->next = q;
-		q = p;	
-		p = r;
-		r = r->next;
-	}
-	l->head  = q->next;
 
-	q = l->tail;
-	p = q->prev;
-	r = p->prev;
-	while(q != r) {
-		p->prev = q;
-		q = p;	
-		p = r;
-		r = r->prev;
-	}
-	l->tail = q->prev;
-}
-/*void sort(list *l) {
-	node *p, *q, *tmp, *pnext;
-	if(l->head == NULL)
-		return;
-	p = l->head->next;
-	while(p != l->head) {
-		//insert p in already sorted list
-		q = l->head;
-		while(strcmp(q->str, p->str) < 0)
-			q = q->next;
-		/* q points to the node, before which we have to insert p 
-		if(q == p) {
-			p = p->next;
-			continue;
-		}	
-		tmp = (node *)malloc(sizeof(node));
-		tmp->str = p->str;
+void SeatReservation(list *l, int BusNum) {/*reserve seat of asked bus*/
 
-		
-		//link tmp to before q
-		tmp->next = q;
-		tmp->prev = q->prev;
-		q->prev->next = tmp;
-		q->prev = tmp;
-		if(q == l->head)
-			l->head = tmp;
-		//destroy p;	
-		p->next->prev = p->prev;
-		p->prev->next = p->next;
-		pnext = p->next;
-		if(p == l->tail)
-			l->tail = p->prev;
-		free(p);	
-		p = pnext;
-	}
-}
-void SeatReservation(list *l) {
-	node *p=l->head;
+	int index;
+	index = 0;	
 	char chName[20];
-	int BusN;
-	int iSeat;
-	char Choice;
+	int a;
+	int b;
+	int k;
+	int j;
+	fd = fopen("Bus.txt", "a+");
 	printf("\n\n\t\t\t______________________");
 	printf("\n\n\t\t\t ALLOTMENT");
 	printf("\n\n\t\t\t______________________\n");
-	fnPrintLine();
-	printf("\n\n\t\tEnter the Bus Number-\t");
-	scanf("%d",&BusN);
-	//if(BusN>=p->str->BusNum) {
-	//	printf("\n\t\t\tSorry Bus Doesn,t Exist!!!!");
-//		fnSeatReservation();
-	//	p=p->next;
-	//}
-
-	seat: printf("\n\t\tEnter the Seat number-\t");
-	scanf("%d",&iSeat);
-	if(iSeat>32){
-		printf("\n\t\tSorry!! There r only 32 seats in the bus!!!!") ;
-		goto seat;
+	node *p;
+	p = l->head;
+	a = 1;
+	while(a != BusNum) {
+		p = p->next;
+		a++;
+	} /*takes pointer to the asked bus*/
+	
+	fprintf(fd, "Bus No : %d", BusNum);
+	printf("\n\n");
+	for(j = 0; j < 8; j++) {
+		printf("\n");
+		for(k = 0; k < 4; k++) { 
+			index++;
+			printf("\t%d .%s\t",index, p->str->chSeat[j][k]);
+		}
 	}
-	else if(strcmp(p->str->chSeat[iSeat/4][(iSeat%4)-1],"Empty")==0) {
+
+	abc: printf("Enter your seat no");
+	scanf("%d", &b);
+	if(b > 32) {
+		printf("only 32 seats are available");
+		goto abc;
+	}
+	fprintf(fd, "	Seat No : %d", b);
+	if(strcmp(p->str->chSeat[b / 4][(b % 4) - 1], "Empty") == 0) {
 		printf("\n\t\tEnter the passenger's name-\t");
-		name: scanf("%s",chName);
-		if(strlen(chName)>20) {
+		name: scanf("%s", chName);
+		if(strlen(chName) > 20) {
 			printf("\n\t\tplz enter only 20 characters!!!!");
 			goto name;
 		}
+	
 		else {
-			strcpy(p->str->chSeat[iSeat/4][iSeat%4-1],chName);
+			strcpy(p->str->chSeat[b / 4][(b % 4) - 1], chName);
 			printf("\n\t\tYour seat is reserved now!!");
 			p->str->Ticketsold++;
-			printf("\n\t do u want to continue with reservation(y/n)??");
-			scanf("%c",&Choice);
-			//if(Choice=='y'||Choice=='Y')	
-				//fnSeatReservation();
-			//else
-				fnMainMenu();
+		}
+	
+	}
+	fprintf(fd, "	Passengers Name : %s", chName);
+}
+
+void fnShowStatus(list *l, int BusNum) {/*function shows all the status of the asked bus*/	
+
+	int index;
+	index = 0;
+	int j;
+	int k;
+	int a;
+	fnPrintLine();
+	node *p = l->head;
+	a = 1;
+	while(a != BusNum) {
+		p = p->next;
+		a++;
+	}
+	
+	printf("\nBus code-\t%d\t\tDriver's Name-\t%s", p->str->BusCode, p->str->chDrivers_Name);
+	printf("\nArrival Time-\t%d:%d\t\tDeparture Time\t%d:%d", p->str->Arrival_Time.Hrs, p->str->Arrival_Time.Mins, p->str->stDeparture_Time.Hrs, p->str->stDeparture_Time.Mins);
+	printf("\nFrom-\t\t%s\t\tTo-\t\t%s", p->str->chGoesFrom, p->str->GoesTo);
+	printf("\nFare-\t\t%f\tTickets Sold-\t%d", p->str->fFare, p->str->Ticketsold);
+	printf("\n");
+	fnPrintLine();
+	printf("\n\n");
+	for(j = 0; j < 8; j++) {
+		printf("\n");
+		for(k = 0; k < 4; k++) {
+			index++;
+			printf("\t%d .%s\t",index, p->str->chSeat[j][k]);
 		}
 	}
-	else{
-		printf("\n\tThis seat is already reserved!!!!");
-		printf("\n\t do u want to try again??");
-		scanf("%c",&Choice);
-		//if(Choice=='y'||Choice=='Y')
-		//	fnSeatReservation();
-		//else
-			fnMainMenu();
-	}
-	p->str->Ticketsold++;
+	printf("\n");
 }
-*/
+
+void fnDailyReport(list *l) {
+
+	int i = 1;
+	double dDailyTotal = 0;
+	double dBusTotal = 0;
+	printf("\n\n\t\t\t______________________");
+	printf("\n\n\t\t\t DAILY REPORT");
+	printf("\n\n\t\t\t______________________\n");
+	fnPrintLine();
+	node *p;
+	p = l->head;
+	while(p != l->tail) {
+		dBusTotal = (p->str->Ticketsold)*(p->str->fFare);
+		printf("\n\t\t\tBus no-\t%d\t Total tickets Sold-\t%d", i, p->str->Ticketsold);
+		printf("\n\t\t\tTotal Fare-\t%.4lf\n", dBusTotal);
+		dDailyTotal += dBusTotal;
+		i++;
+		p = p->next;
+	}
+	
+	if(p) {
+		dBusTotal = (p->str->Ticketsold)*(p->str->fFare);
+		printf("\n\t\t\tBus no-\t%d\t Total tickets Sold-\t%d", i, p->str->Ticketsold);
+		printf("\n\t\t\tTotal Fare-\t%.4lf\n", dBusTotal);
+		dDailyTotal += dBusTotal;
+		i++;
+	}	
+	
+	printf("\n\n\t\t\tDaily Total = \t%lf",dDailyTotal);
+}
+
+void fnEmpty(Bus *str) { /*function prints empty in all the seats*/
+
+	char chEmpty[] = "Empty";
+	int i, j;
+	for(i = 0; i < 8; i++) {
+		for(j = 0; j < 4; j++) {
+			strcpy(str->chSeat[i][j], chEmpty);
+		}
+	}
+}
+
+void Cancelticket(list *l){
+
+	int busno;
+	int sno;
+	int a;
+	int j;
+	int k;
+	char name[20];
+	int index;
+	index = 0;	
+	fnPrintLine();
+	printf("\n\n\t\tEnter your Bus no\n");
+	scanf("%d", &busno);
+	fnPrintLine();
+	node *p = l->head;
+	a = 1;
+	while(a != busno) {
+		p = p->next;
+		a++;
+	} 
+	
+	abc: printf("\n\n\t\tEnter your seat no\n");
+	scanf("%d", &sno);
+	if(sno > 32) {
+		printf("only 32 seats are available\n");
+		goto abc;
+	}
+	
+	printf("\n\n");
+	for(j = 0; j < 8; j++) {
+		printf("\n");
+		for(k = 0; k < 4; k++) { 
+			index++;
+			printf("\t%d .%s\t",index, p->str->chSeat[j][k]);
+		}
+	}
+	index = 0;
+	name: printf("\n\n\t\tEnter your Name\n");
+	scanf("%s", name);
+	if(strlen(name) > 20) {
+			printf("\n\t\tplz enter only 20 characters!!!!");
+			goto name;
+	}
+	
+	if(strcmp(p->str->chSeat[sno / 4][(sno % 4) - 1], name) == 0){
+		strcpy(p->str->chSeat[sno / 4][(sno % 4) - 1], "Empty");
+		printf("\n\t\tYour ticket  is cancelled now!!");
+		p->str->Ticketsold--;
+	}
+	
+	printf("\n\n");
+	for(j = 0; j < 8; j++) {
+		printf("\n");
+		for(k = 0; k < 4; k++) { 
+			index++;
+			printf("\t%d .%s\t",index, p->str->chSeat[j][k]);
+		}
+	}
+}
+void fnPrintLine() { 
+
+	int j;
+	for(j = 0;j < 70; j++)
+	printf("*");
+}
